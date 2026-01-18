@@ -1,0 +1,161 @@
+{
+    "name": "DailyNewsBot Sovereign Orchestrator",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "daily-news",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                0,
+                0
+            ],
+            "id": "webhook-daily",
+            "name": "Webhook: Daily News"
+        },
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "hours",
+                            "triggerAtHour": 21,
+                            "triggerAtMinute": 0
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.cron",
+            "typeVersion": 1,
+            "position": [
+                0,
+                200
+            ],
+            "id": "cron-daily",
+            "name": "Cron: 9PM Daily"
+        },
+        {
+            "parameters": {
+                "jsCode": "const { execSync } = require('child_process');\nconst cmd = 'python \"c:/Users/hafiz/OneDrive - University of Engineering and Technology Taxila/Desktop/Ibrahim/python/DailyNewsBot/bot_core.py\" --json-output';\nconst stdout = execSync(cmd, { encoding: 'utf8' });\nreturn [{json: JSON.parse(stdout)}];"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                250,
+                100
+            ],
+            "id": "run-daily-bot",
+            "name": "Run DailyNewsBot"
+        },
+        {
+            "parameters": {
+                "path": "query",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                0,
+                400
+            ],
+            "id": "webhook-query",
+            "name": "Webhook: Query"
+        },
+        {
+            "parameters": {
+                "jsCode": "const { execSync } = require('child_process');\nconst topic = $input.all()[0].json.query.topic;\nconst cmd = `python \"c:/Users/hafiz/OneDrive - University of Engineering and Technology Taxila/Desktop/Ibrahim/python/DailyNewsBot/antigravity_query.py\" \"${topic}\" --json`;\nconst stdout = execSync(cmd, { encoding: 'utf8' });\nreturn [{json: JSON.parse(stdout)}];"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                250,
+                400
+            ],
+            "id": "run-query",
+            "name": "Run Antigravity Query"
+        },
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes",
+                            "minutesInterval": 30
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.cron",
+            "typeVersion": 1,
+            "position": [
+                0,
+                600
+            ],
+            "id": "cron-health",
+            "name": "Cron: Health Check"
+        },
+        {
+            "parameters": {
+                "jsCode": "const { execSync } = require('child_process');\nconst cmd = 'python \"c:/Users/hafiz/OneDrive - University of Engineering and Technology Taxila/Desktop/Ibrahim/python/DailyNewsBot/system_health.py\"';\ntry {\n  const stdout = execSync(cmd, { encoding: 'utf8' });\n  return [{json: { output: stdout, status: 'success' }}];\n} catch (e) {\n  return [{json: { output: e.message, status: 'error' }}];\n}"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                250,
+                600
+            ],
+            "id": "run-health",
+            "name": "Run Health Check"
+        }
+    ],
+    "connections": {
+        "Webhook: Daily News": {
+            "main": [
+                [
+                    {
+                        "node": "Run DailyNewsBot",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Cron: 9PM Daily": {
+            "main": [
+                [
+                    {
+                        "node": "Run DailyNewsBot",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Webhook: Query": {
+            "main": [
+                [
+                    {
+                        "node": "Run Antigravity Query",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Cron: Health Check": {
+            "main": [
+                [
+                    {
+                        "node": "Run Health Check",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

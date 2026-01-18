@@ -1,0 +1,24 @@
+# Core Dependencies
+python-dotenv>=1.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+feedparser>=6.0.0
+
+# AI & ML
+google-generativeai>=0.3.0
+
+# WhatsApp Integration
+pywhatkit>=5.4
+pyautogui>=0.9.54
+
+# Media Generation
+edge-tts>=6.1.0
+moviepy>=2.0.0
+pillow>=10.0.0
+numpy>=1.24.0
+
+# Security
+keyring>=24.0.0
+
+# Optional: PDF Analysis (for Downloads Organizer)
+pypdf>=3.0.0

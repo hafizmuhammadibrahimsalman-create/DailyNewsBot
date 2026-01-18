@@ -1,0 +1,101 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "path": "daily-news",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                0,
+                0
+            ],
+            "id": "webhook-trigger",
+            "name": "Start Trigger"
+        },
+        {
+            "parameters": {
+                "command": "python \"c:/Users/hafiz/OneDrive - University of Engineering and Technology Taxila/Desktop/Ibrahim/python/DailyNewsBot/bot_core.py\" --json-output"
+            },
+            "type": "n8n-nodes-base.executeCommand",
+            "typeVersion": 1,
+            "position": [
+                200,
+                0
+            ],
+            "id": "run-python-bot",
+            "name": "Run DailyNewsBot"
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                400,
+                0
+            ],
+            "id": "parse-json",
+            "name": "Parse Output",
+            "code": {
+                "language": "javaScript",
+                "code": "const output = JSON.parse($input.all()[0].json.stdout);\nreturn {json: output};"
+            }
+        },
+        {
+            "parameters": {
+                "subject": "Daily News Intelligence Video",
+                "message": "Here is your daily briefing video and report.",
+                "attachments": "video_path",
+                "additionalFields": {
+                    "html": true,
+                    "text": "={{$json.report_text}}"
+                }
+            },
+            "type": "n8n-nodes-base.email",
+            "typeVersion": 2,
+            "position": [
+                600,
+                0
+            ],
+            "id": "send-email",
+            "name": "Send Email"
+        }
+    ],
+    "connections": {
+        "Start Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Run DailyNewsBot",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Run DailyNewsBot": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Output",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Output": {
+            "main": [
+                [
+                    {
+                        "node": "Send Email",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

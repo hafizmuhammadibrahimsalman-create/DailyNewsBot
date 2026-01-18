@@ -1,0 +1,36 @@
+{
+    "available_workflows": [
+        "daily_news_video",
+        "whatsapp_sender",
+        "news_fetcher"
+    ],
+    "capabilities": {
+        "news_sources": [
+            "NewsAPI",
+            "GNews",
+            "Google RSS",
+            "Pakistan feeds"
+        ],
+        "ai_models": [
+            "gemini-1.5-pro",
+            "gemini-1.5-flash"
+        ],
+        "output_formats": [
+            "video",
+            "text",
+            "whatsapp"
+        ],
+        "scheduling": "n8n cron"
+    },
+    "user_preferences": {
+        "location": "Taxila/Islamabad",
+        "interests": [
+            "AI",
+            "Technology",
+            "Pakistan",
+            "IJT"
+        ],
+        "delivery_time": "21:00",
+        "phone": "923300301917"
+    }
+}
