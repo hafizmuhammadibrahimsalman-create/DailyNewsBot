@@ -438,7 +438,7 @@ class TestUtils(unittest.TestCase):
         """Test text sanitization."""
         from utils import sanitize_text
         
-        dirty = "Test â€™ text â€" with issues"
+        dirty = "Test â€™ text â€ with issues"
         clean = sanitize_text(dirty)
         
         self.assertNotIn("â€™", clean)

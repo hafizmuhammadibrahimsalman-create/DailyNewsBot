@@ -1,0 +1,263 @@
+test_api_key_validation_empty (__main__.TestConfiguration.test_api_key_validation_empty)
+Test empty API key fails. ... ok
+test_api_key_validation_short (__main__.TestConfiguration.test_api_key_validation_short)
+Test short API key fails. ... ok
+test_api_key_validation_valid (__main__.TestConfiguration.test_api_key_validation_valid)
+Test valid API key passes validation. ... ok
+test_config_initialization (__main__.TestConfiguration.test_config_initialization)
+Test config loads correctly. ... ok
+test_phone_validation_invalid (__main__.TestConfiguration.test_phone_validation_invalid)
+Test invalid phone numbers fail. ... ok
+test_phone_validation_valid (__main__.TestConfiguration.test_phone_validation_valid)
+Test valid phone numbers pass. ... ok
+test_topics_config (__main__.TestConfiguration.test_topics_config)
+Test topics are configured. ... ok
+test_circuit_opens_on_failures (__main__.TestCircuitBreaker.test_circuit_opens_on_failures)
+Test circuit opens after threshold failures. ... ok
+test_decorator_exists (__main__.TestCircuitBreaker.test_decorator_exists)
+Test circuit decorator is available. ... ok
+test_initial_state_closed (__main__.TestCircuitBreaker.test_initial_state_closed)
+Test circuit starts closed. ... ok
+test_keeps_different_articles (__main__.TestNewsClusterer.test_keeps_different_articles)
+Test different articles are kept. ... ok
+test_removes_duplicates (__main__.TestNewsClusterer.test_removes_duplicates)
+Test duplicate removal. ... ok
+test_expired_returns_none (__main__.TestSmartCache.test_expired_returns_none)
+Test expired cache returns None. ... ok
+test_missing_key_returns_none (__main__.TestSmartCache.test_missing_key_returns_none)
+Test missing key returns None. ... ok
+test_set_and_get (__main__.TestSmartCache.test_set_and_get)
+Test basic cache operations. ... ok
+test_fetcher_initialization (__main__.TestNewsFetcher.test_fetcher_initialization)
+Test fetcher initializes. ... ok
+test_google_rss_fetch (__main__.TestNewsFetcher.test_google_rss_fetch)
+Test Google RSS fetch. ... ok
+test_basic_report_generation (__main__.TestAISummarizer.test_basic_report_generation)
+Test basic report generation (fallback mode). ... C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\ai_summarizer.py:4: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+INFO:ai_summarizer:[OK] Gemini AI initialized successfully
+ok
+test_summarizer_initialization (__main__.TestAISummarizer.test_summarizer_initialization)
+Test summarizer initializes. ... INFO:ai_summarizer:[OK] Gemini AI initialized successfully
+ok
+test_dashboard_generation (__main__.TestDashboardGenerator.test_dashboard_generation)
+Test dashboard HTML generation. ... ERROR
+test_send_message (__main__.TestWhatsAppSender.test_send_message)
+Test message sending. ... INFO:whatsapp_sender:[>>] Sending to +923300301917...
+INFO:whatsapp_sender:[OK] Auto-pressed Enter to send
+INFO:whatsapp_sender:[OK] Send command issued successfully
+INFO:whatsapp_sender:    Check WhatsApp Web tab to verify delivery
+ok
+test_sender_initialization (__main__.TestWhatsAppSender.test_sender_initialization)
+Test sender initializes. ... ok
+test_controller_initialization (__main__.TestAutomationController.test_controller_initialization)
+[CACHE] Cache Hit: test_key...
+Test controller initializes. ... ok
+test_health_check_structure (__main__.TestAutomationController.test_health_check_structure)
+2026-01-19 16:08:37,871 | INFO     | AutomationMaster | ============================================================
+Test health check returns proper structure. ... INFO:AutomationMaster:============================================================
+2026-01-19 16:08:37,872 | INFO     | AutomationMaster | [>>] SYSTEM HEALTH CHECK
+INFO:AutomationMaster:[>>] SYSTEM HEALTH CHECK
+2026-01-19 16:08:37,872 | INFO     | AutomationMaster | ============================================================
+INFO:AutomationMaster:============================================================
+2026-01-19 16:08:37,873 | INFO     | AutomationMaster | [OK] Python 3.12
+INFO:AutomationMaster:[OK] Python 3.12
+2026-01-19 16:08:37,876 | INFO     | AutomationMaster | [OK] WHATSAPP_NUMBER configured
+INFO:AutomationMaster:[OK] WHATSAPP_NUMBER configured
+2026-01-19 16:08:37,876 | INFO     | AutomationMaster | [OK] GEMINI_API_KEY configured
+INFO:AutomationMaster:[OK] GEMINI_API_KEY configured
+2026-01-19 16:08:37,876 | INFO     | AutomationMaster | [OK] NEWS_API_KEY configured
+INFO:AutomationMaster:[OK] NEWS_API_KEY configured
+2026-01-19 16:08:37,876 | INFO     | AutomationMaster | [OK] GNEWS_API_KEY configured
+INFO:AutomationMaster:[OK] GNEWS_API_KEY configured
+2026-01-19 16:08:37,881 | INFO     | AutomationMaster | [OK] news_fetcher: Module loaded
+INFO:AutomationMaster:[OK] news_fetcher: Module loaded
+INFO:ai_summarizer:[OK] Gemini AI initialized successfully
+2026-01-19 16:08:37,882 | INFO     | AutomationMaster | [OK] ai_summarizer: Gemini API ready
+INFO:AutomationMaster:[OK] ai_summarizer: Gemini API ready
+2026-01-19 16:08:37,883 | INFO     | AutomationMaster | [OK] whatsapp_sender: Target: +923300301917
+INFO:AutomationMaster:[OK] whatsapp_sender: Target: +923300301917
+2026-01-19 16:08:37,884 | INFO     | AutomationMaster | [OK] smart_cache: Cache initialized
+INFO:AutomationMaster:[OK] smart_cache: Cache initialized
+2026-01-19 16:08:37,884 | INFO     | AutomationMaster | [OK] circuit_breaker: Circuit breaker ready
+INFO:AutomationMaster:[OK] circuit_breaker: Circuit breaker ready
+2026-01-19 16:08:37,885 | INFO     | AutomationMaster | [OK] dashboard_generator: Dashboard generator ready
+INFO:AutomationMaster:[OK] dashboard_generator: Dashboard generator ready
+2026-01-19 16:08:37,885 | INFO     | AutomationMaster | ============================================================
+INFO:AutomationMaster:============================================================
+2026-01-19 16:08:37,885 | INFO     | AutomationMaster | [OK] SYSTEM HEALTHY - Ready to run
+INFO:AutomationMaster:[OK] SYSTEM HEALTHY - Ready to run
+2026-01-19 16:08:37,885 | INFO     | AutomationMaster | ============================================================
+INFO:AutomationMaster:============================================================
+DEBUG:AutomationMaster:Health report saved: health_20260119_160837.json
+ok
+test_rate_limiter_allows_within_limit (__main__.TestRateLimiter.test_rate_limiter_allows_within_limit)
+Test calls within limit are allowed. ... ok
+test_rate_limiter_blocks_over_limit (__main__.TestRateLimiter.test_rate_limiter_blocks_over_limit)
+Test calls over limit are blocked. ... ok
+test_rate_limiter_decorator (__main__.TestRateLimiter.test_rate_limiter_decorator)
+Test rate limiter as decorator. ... ok
+test_rate_limiter_initialization (__main__.TestRateLimiter.test_rate_limiter_initialization)
+Test rate limiter initializes correctly. ... ok
+test_retry_with_backoff_eventual_success (__main__.TestUtils.test_retry_with_backoff_eventual_success)
+Test retry decorator retries until success. ... ERROR
+test_retry_with_backoff_success (__main__.TestUtils.test_retry_with_backoff_success)
+Test retry decorator with successful call. ... ERROR
+test_sanitize_text (__main__.TestUtils.test_sanitize_text)
+Test text sanitization. ... ERROR
+test_truncate (__main__.TestUtils.test_truncate)
+Test text truncation. ... ERROR
+test_validate_phone_number_valid (__main__.TestUtils.test_validate_phone_number_valid)
+Test phone number validation with valid numbers. ... ERROR
+test_format_error (__main__.TestWhatsAppFormatter.test_format_error)
+Test error message formatting. ... ok
+test_format_report_basic (__main__.TestWhatsAppFormatter.test_format_report_basic)
+Test basic report formatting. ... ok
+test_sanitize_text (__main__.TestWhatsAppFormatter.test_sanitize_text)
+Test text sanitization in formatter. ... ok
+test_database_initialization (__main__.TestAnalyticsDB.test_database_initialization)
+Test database creates tables. ... ok
+test_get_statistics (__main__.TestAnalyticsDB.test_get_statistics)
+Test retrieving statistics. ... ok
+test_log_run (__main__.TestAnalyticsDB.test_log_run)
+Test logging a run. ... ok
+test_check_directories (__main__.TestHealthCheck.test_check_directories)
+Test directory checking. ... ok
+test_check_disk_space (__main__.TestHealthCheck.test_check_disk_space)
+Test disk space check. ... ok
+test_health_check_initialization (__main__.TestHealthCheck.test_health_check_initialization)
+Test health check initializes. ... ok
+test_run_all_checks (__main__.TestHealthCheck.test_run_all_checks)
+Test running all health checks. ... INFO:health_check:[>>] Running health checks...
+WARNING:health_check:[WARN] Some health checks failed
+ok
+test_dry_run_workflow (__main__.IntegrationTests.test_dry_run_workflow)
+2026-01-19 16:08:38,320 | INFO     | AutomationMaster | ============================================================
+Test complete dry run workflow. ... INFO:AutomationMaster:============================================================
+2026-01-19 16:08:38,320 | INFO     | AutomationMaster | [>>] STARTING FULL AUTOMATION CYCLE
+INFO:AutomationMaster:[>>] STARTING FULL AUTOMATION CYCLE
+2026-01-19 16:08:38,321 | INFO     | AutomationMaster |      Mode: DRY RUN
+INFO:AutomationMaster:     Mode: DRY RUN
+2026-01-19 16:08:38,321 | INFO     | AutomationMaster | ============================================================
+INFO:AutomationMaster:============================================================
+2026-01-19 16:08:38,322 | INFO     | AutomationMaster | [>>] Fetching news...
+INFO:AutomationMaster:[>>] Fetching news...
+INFO:news_clustering:[CLEAN] Deduplication removed 0 redundant articles.
+2026-01-19 16:08:38,323 | INFO     | AutomationMaster | [>>] Generating AI summary...
+INFO:AutomationMaster:[>>] Generating AI summary...
+2026-01-19 16:08:38,323 | INFO     | AutomationMaster | [OK] Report generated (11 chars)
+INFO:AutomationMaster:[OK] Report generated (11 chars)
+2026-01-19 16:08:38,323 | INFO     | AutomationMaster | [DRY] DRY RUN - Message not sent
+INFO:AutomationMaster:[DRY] DRY RUN - Message not sent
+2026-01-19 16:08:38,323 | INFO     | AutomationMaster | Preview (11 chars):
+Test Report...
+INFO:AutomationMaster:Preview (11 chars):
+Test Report...
+[OK] Dashboard generated: C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\dashboard.html
+2026-01-19 16:08:38,326 | INFO     | AutomationMaster | [OK] Dashboard updated: C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\dashboard.html
+INFO:AutomationMaster:[OK] Dashboard updated: C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\dashboard.html
+2026-01-19 16:08:38,328 | INFO     | AutomationMaster | ============================================================
+INFO:AutomationMaster:============================================================
+2026-01-19 16:08:38,328 | INFO     | AutomationMaster | [OK] CYCLE COMPLETE in 0.0s
+INFO:AutomationMaster:[OK] CYCLE COMPLETE in 0.0s
+2026-01-19 16:08:38,328 | INFO     | AutomationMaster | ============================================================
+INFO:AutomationMaster:============================================================
+DEBUG:AutomationMaster:Run stats saved
+ok
+
+======================================================================
+ERROR: test_dashboard_generation (__main__.TestDashboardGenerator.test_dashboard_generation)
+Test dashboard HTML generation.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\test_suite.py", line 267, in test_dashboard_generation
+    path = dash.generate()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\dashboard_generator.py", line 25, in generate
+    html = self._build_html()
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\dashboard_generator.py", line 45, in _build_html
+    success_rate = round(((total - errors) / total) * 100, 1)
+                          ~~~~~~~~~~~~~~~~~^~~~~~~
+ZeroDivisionError: division by zero
+
+======================================================================
+ERROR: test_retry_with_backoff_eventual_success (__main__.TestUtils.test_retry_with_backoff_eventual_success)
+Test retry decorator retries until success.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\test_suite.py", line 422, in test_retry_with_backoff_eventual_success
+    from utils import retry_with_backoff
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\utils.py", line 231
+    dirty = "Test ├óΓé¼Γäó text ├óΓé¼" with issues"
+                                          ^
+SyntaxError: unterminated string literal (detected at line 231)
+
+======================================================================
+ERROR: test_retry_with_backoff_success (__main__.TestUtils.test_retry_with_backoff_success)
+Test retry decorator with successful call.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\test_suite.py", line 411, in test_retry_with_backoff_success
+    from utils import retry_with_backoff
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\utils.py", line 231
+    dirty = "Test ├óΓé¼Γäó text ├óΓé¼" with issues"
+                                          ^
+SyntaxError: unterminated string literal (detected at line 231)
+
+============================================================
+TEST SUMMARY
+============================================================
+Tests run: 44
+Successes: 38
+Failures: 0
+Errors: 6
+============================================================
+
+======================================================================
+ERROR: test_sanitize_text (__main__.TestUtils.test_sanitize_text)
+Test text sanitization.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\test_suite.py", line 439, in test_sanitize_text
+    from utils import sanitize_text
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\utils.py", line 231
+    dirty = "Test ├óΓé¼Γäó text ├óΓé¼" with issues"
+                                          ^
+SyntaxError: unterminated string literal (detected at line 231)
+
+======================================================================
+ERROR: test_truncate (__main__.TestUtils.test_truncate)
+Test text truncation.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\test_suite.py", line 449, in test_truncate
+    from utils import truncate
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\utils.py", line 231
+    dirty = "Test ├óΓé¼Γäó text ├óΓé¼" with issues"
+                                          ^
+SyntaxError: unterminated string literal (detected at line 231)
+
+======================================================================
+ERROR: test_validate_phone_number_valid (__main__.TestUtils.test_validate_phone_number_valid)
+Test phone number validation with valid numbers.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\test_suite.py", line 459, in test_validate_phone_number_valid
+    from utils import validate_phone_number
+  File "C:\Users\hafiz\OneDrive - University of Engineering and Technology Taxila\Desktop\Ibrahim\Projects\Python\DailyNewsBot\utils.py", line 231
+    dirty = "Test ├óΓé¼Γäó text ├óΓé¼" with issues"
+                                          ^
+SyntaxError: unterminated string literal (detected at line 231)
+
+----------------------------------------------------------------------
+Ran 44 tests in 16.227s
+
+FAILED (errors=6)

@@ -228,7 +228,7 @@ if __name__ == "__main__":
         time.sleep(0.1)
     
     # Test sanitize
-    dirty = "Test â€™ text â€" with issues"
+    dirty = "Test â€™ text â€ with issues"
     clean = sanitize_text(dirty)
     print(f"Sanitize: '{dirty}' -> '{clean}'")
     

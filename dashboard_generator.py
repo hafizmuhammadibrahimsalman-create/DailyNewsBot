@@ -40,9 +40,9 @@ class DashboardGenerator:
         durations = [h["duration"] for h in reversed(history)]
         
         # Calculate success rate
-        total = self.stats.get("total_runs", 1)
+        total = self.stats.get("total_runs", 0)
         errors = self.stats.get("total_errors", 0)
-        success_rate = round(((total - errors) / total) * 100, 1)
+        success_rate = round(((total - errors) / total) * 100, 1) if total > 0 else 100.0
 
         return f"""<!DOCTYPE html>
 <html lang="en">

@@ -143,14 +143,19 @@ Create a WhatsApp-friendly text infographic."""
             return articles[:3]
         
         try:
-            topic_config = TOPICS.get(topic_id, {})
-            filter_type = topic_config.get('filter', 'all')
+            topic_config = TOPICS.get(topic_id)
+            if not topic_config:
+                return articles[:3]
+                
+            # Handle dataclass access
+            filter_type = getattr(topic_config, 'filter', 'all') if hasattr(topic_config, 'filter') else topic_config.get('filter', 'all')
             
             articles_text = "\n".join([
                 f"{i+1}. {a['title']}" for i, a in enumerate(articles[:10])
             ])
             
-            prompt = f"""From these {topic_config.get('name', 'news')} headlines, select ONLY the most important ones.
+            topic_name = getattr(topic_config, 'name', 'news') if hasattr(topic_config, 'name') else topic_config.get('name', 'news')
+            prompt = f"""From these {topic_name} headlines, select ONLY the most important ones.
 
 Filter criteria: {filter_type}
 - beneficial: Must provide practical value or learning
@@ -183,7 +188,10 @@ Maximum 3 selections. Be VERY selective."""
             return articles[:3]
             
         except Exception as e:
-            logger.warning(f"Filter error: {e}")
+            if "429" in str(e):
+                logger.warning("Gemini quota exceeded during filtering - skipping AI filter")
+            else:
+                logger.warning(f"Filter error for {topic_id}: {e}")
             return articles[:3]
     
     def _create_basic_report(self, all_news: Dict[str, List[Dict]]) -> str:
@@ -216,8 +224,12 @@ Maximum 3 selections. Be VERY selective."""
             if not articles:
                 continue
                 
-            topic_config = TOPICS.get(topic_id, {})
-            topic_name = topic_config.get('name', topic_id.title())
+            topic_config = TOPICS.get(topic_id)
+            if not topic_config:
+                topic_name = topic_id.title()
+            else:
+                # Handle dataclass access
+                topic_name = getattr(topic_config, 'name', topic_id.title()) if hasattr(topic_config, 'name') else topic_config.get('name', topic_id.title())
             
             lines.append(f"\n*{sanitize(topic_name)}*")
             
