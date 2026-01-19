@@ -5,7 +5,8 @@ import google.generativeai as genai
 from typing import List, Dict, Optional
 import json
 import logging
-from bot.config import GEMINI_API_KEY, GEMINI_MODEL, GEMINI_FLASH, SUMMARIZER_PROMPT, INFOGRAPHIC_PROMPT, TOPICS
+import time
+from bot.config import GEMINI_API_KEY, GEMINI_MODEL, GEMINI_FLASH, SUMMARIZER_PROMPT, INFOGRAPHIC_PROMPT, TOPICS, get_config
 from bot.content_scraper import ContentScraper
 
 logging.basicConfig(level=logging.INFO)
@@ -21,19 +22,22 @@ class GeminiSummarizer:
         self.model = None
         self.flash_model = None
         
+        config = get_config()
+        self.request_delay = config.ai.request_delay
+        
         # Validate API key properly
         if not GEMINI_API_KEY:
             logger.warning("[WARN] GEMINI_API_KEY not set. Using basic summaries.")
             return
-        
+
         if "YOUR_" in GEMINI_API_KEY.upper():
             logger.warning("[WARN] GEMINI_API_KEY contains placeholder. Using basic summaries.")
             return
-        
+
         if len(GEMINI_API_KEY) < 30:
             logger.warning(f"[WARN] GEMINI_API_KEY looks invalid (too short: {len(GEMINI_API_KEY)} chars). Using basic summaries.")
             return
-        
+
         # Try to initialize Gemini
         try:
             genai.configure(api_key=GEMINI_API_KEY)
@@ -103,6 +107,8 @@ IMPORTANT:
 - Maximum 2500 characters total
 - Make it scannable on mobile"""
 
+            # Add delay for rate limiting
+            time.sleep(self.request_delay)
             response = self.model.generate_content(prompt)
             return response.text
             
@@ -129,6 +135,8 @@ Political news to visualize:
 
 Create a WhatsApp-friendly text infographic."""
 
+            # Add delay for rate limiting
+            time.sleep(self.request_delay)
             response = self.flash_model.generate_content(prompt)
             return response.text
             
@@ -170,6 +178,8 @@ Headlines:
 Return ONLY the numbers of selected headlines (e.g., "1, 3, 5")
 Maximum 3 selections. Be VERY selective."""
 
+            # Add delay for rate limiting
+            time.sleep(self.request_delay)
             response = self.flash_model.generate_content(prompt)
             
             # Parse response to get selected indices

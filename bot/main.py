@@ -350,6 +350,10 @@ class NewsAutomationController:
             from bot.ai_summarizer import GeminiSummarizer
             summarizer = GeminiSummarizer()
             
+            if self.dry_run:
+                self.logger.info("[DRY] Disabling AI for dry run to save quota")
+                summarizer.enabled = False
+            
             # Filter by topic
             filtered = {}
             for topic, articles in all_news.items():

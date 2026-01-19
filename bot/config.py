@@ -69,6 +69,16 @@ class TopicConfig:
     priority: str = "MEDIUM"  # HIGH, MEDIUM, LOW
     filter_type: str = "all"  # all, beneficial, important, attention_worthy
     include_all: bool = False
+    rss_url: Optional[str] = None
+    
+    def to_dict(self) -> Dict:
+        """Convert to dictionary for backwards compatibility."""
+        from dataclasses import asdict
+        return asdict(self)
+    
+    def get(self, key: str, default=None):
+        """Dict-like get method for backwards compatibility."""
+        return getattr(self, key, default)
 
 
 # Default topics
@@ -77,48 +87,56 @@ TOPICS: Dict[str, TopicConfig] = {
         name="AI & Machine Learning",
         keywords=["artificial intelligence", "machine learning", "ChatGPT", "Gemini", "OpenAI", "LLM"],
         priority="HIGH",
-        include_all=True
+        include_all=True,
+        rss_url="https://news.google.com/rss/search?q=artificial+intelligence&hl=en&gl=US&ceid=US:en"
     ),
     "technology": TopicConfig(
         name="Technology",
         keywords=["technology", "tech news", "software", "startup", "innovation"],
         priority="HIGH",
-        filter_type="beneficial"
+        filter_type="beneficial",
+        rss_url="https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=en&gl=US&ceid=US:en"
     ),
     "pakistan": TopicConfig(
         name="Pakistan News",
         keywords=["Islamabad", "Taxila", "Karachi", "Pakistan", "Rawalpindi"],
         priority="HIGH",
-        filter_type="important"
+        filter_type="important",
+        rss_url="https://news.google.com/rss/search?q=pakistan&hl=en&gl=PK&ceid=PK:en"
     ),
     "politics": TopicConfig(
         name="Politics",
         keywords=["Pakistan politics", "government", "election", "Parliament"],
-        priority="MEDIUM"
+        priority="MEDIUM",
+        rss_url="https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtVnVHZ0pWVXlnQVAB?hl=en&gl=US&ceid=US:en"
     ),
     "business": TopicConfig(
         name="Business",
         keywords=["business", "economy", "stock market", "PSX", "rupee"],
         priority="MEDIUM",
-        filter_type="attention_worthy"
+        filter_type="attention_worthy",
+        rss_url="https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtVnVHZ0pWVXlnQVAB?hl=en&gl=US&ceid=US:en"
     ),
     "sports": TopicConfig(
         name="Sports",
         keywords=["Pakistan cricket", "PSL", "sports"],
         priority="LOW",
-        filter_type="very_valuable"
+        filter_type="very_valuable",
+        rss_url="https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFp1ZEdvU0FtVnVHZ0pWVXlnQVAB?hl=en&gl=US&ceid=US:en"
     ),
     "science": TopicConfig(
         name="Science",
         keywords=["science breakthrough", "research", "space", "medicine"],
         priority="MEDIUM",
-        filter_type="beneficial"
+        filter_type="beneficial",
+        rss_url="https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFp0Y1RjU0FtVnVHZ0pWVXlnQVAB?hl=en&gl=US&ceid=US:en"
     ),
     "ijt": TopicConfig(
         name="Islami Jamiat Talaba",
         keywords=["Islami Jamiat Talaba", "IJT", "student union"],
         priority="HIGH",
-        filter_type="attention_required"
+        filter_type="attention_required",
+        rss_url="https://news.google.com/rss/search?q=islami+jamiat+talaba&hl=en&gl=PK&ceid=PK:en"
     )
 }
 
@@ -127,9 +145,9 @@ TOPICS: Dict[str, TopicConfig] = {
 class NewsConfig:
     """News fetching configuration."""
     topics: Dict[str, TopicConfig] = field(default_factory=lambda: TOPICS)
-    max_articles_per_topic: int = 5
-    max_total_articles: int = 25
-    cache_ttl: int = 3600  # 1 hour
+    max_articles_per_topic: int = 3
+    max_total_articles: int = 15
+    cache_ttl: int = 12 * 3600  # 12 hours
     language: str = "en"
     country: str = "pk"
 
@@ -137,12 +155,13 @@ class NewsConfig:
 @dataclass
 class AIConfig:
     """AI summarization configuration."""
-    model_name: str = "gemini-2.0-flash"
-    flash_model: str = "gemini-2.0-flash"
+    model_name: str = "gemini-1.5-flash"  # Changed to fit free tier limits
+    flash_model: str = "gemini-1.5-flash"
     temperature: float = 0.3
     max_tokens: int = 2048
     summary_max_length: int = 150
     similarity_threshold: float = 0.65
+    request_delay: int = 2  # Seconds between requests
 
 
 @dataclass
@@ -270,8 +289,8 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 NEWS_API_KEY = os.getenv("NEWS_API_KEY", "")
 GNEWS_API_KEY = os.getenv("GNEWS_API_KEY", "")
 
-MAX_ARTICLES_PER_TOPIC = 5
-MAX_TOTAL_ARTICLES = 25
+MAX_ARTICLES_PER_TOPIC = 3
+MAX_TOTAL_ARTICLES = 15
 REPORT_TIME = "21:00"
 
 GEMINI_MODEL = "gemini-2.0-flash"

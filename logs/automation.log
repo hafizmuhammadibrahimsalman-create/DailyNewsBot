@@ -1,0 +1,24 @@
+2026-01-19 21:37:40,327 | INFO     | AutomationMaster | ============================================================
+2026-01-19 21:37:40,328 | INFO     | AutomationMaster | [>>] STARTING FULL AUTOMATION CYCLE
+2026-01-19 21:37:40,329 | INFO     | AutomationMaster |      Mode: DRY RUN
+2026-01-19 21:37:40,330 | INFO     | AutomationMaster | ============================================================
+2026-01-19 21:37:40,330 | INFO     | AutomationMaster | ============================================================
+2026-01-19 21:37:40,332 | INFO     | AutomationMaster | [>>] SYSTEM HEALTH CHECK
+2026-01-19 21:37:40,352 | INFO     | AutomationMaster | ============================================================
+2026-01-19 21:37:40,353 | INFO     | AutomationMaster | [OK] Python 3.12
+2026-01-19 21:37:40,427 | INFO     | AutomationMaster | [OK] Network connected
+2026-01-19 21:37:40,455 | INFO     | AutomationMaster | [OK] WHATSAPP_NUMBER configured
+2026-01-19 21:37:40,457 | INFO     | AutomationMaster | [OK] GEMINI_API_KEY configured
+2026-01-19 21:37:40,457 | INFO     | AutomationMaster | [OK] NEWS_API_KEY configured
+2026-01-19 21:37:40,458 | INFO     | AutomationMaster | [OK] GNEWS_API_KEY configured
+2026-01-19 21:37:41,217 | INFO     | AutomationMaster | [OK] news_fetcher: Module loaded
+2026-01-19 21:37:44,922 | INFO     | AutomationMaster | [OK] ai_summarizer: Gemini API ready
+2026-01-19 21:37:49,090 | INFO     | AutomationMaster | [OK] whatsapp_sender: Target: +923300301917
+2026-01-19 21:37:49,092 | INFO     | AutomationMaster | [OK] smart_cache: Cache initialized
+2026-01-19 21:37:49,093 | INFO     | AutomationMaster | [OK] circuit_breaker: Circuit breaker ready
+2026-01-19 21:37:49,096 | ERROR    | AutomationMaster | [ERR] dashboard_generator: No module named 'analytics'
+2026-01-19 21:37:49,097 | INFO     | AutomationMaster | ============================================================
+2026-01-19 21:37:49,099 | INFO     | AutomationMaster | [OK] SYSTEM HEALTHY - Ready to run
+2026-01-19 21:37:49,099 | INFO     | AutomationMaster | ============================================================
+2026-01-19 21:37:49,122 | DEBUG    | AutomationMaster | Health report saved: health_20260119_213749.json
+2026-01-19 21:37:49,124 | INFO     | AutomationMaster | [>>] Fetching news...

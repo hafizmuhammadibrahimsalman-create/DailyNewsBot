@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-01-19T21:31:04.839662",
+  "python_version": "3.12",
+  "environment": {
+    "WHATSAPP_NUMBER": true,
+    "GEMINI_API_KEY": true,
+    "NEWS_API_KEY": true,
+    "GNEWS_API_KEY": true
+  },
+  "components": {
+    "network": true,
+    "news_fetcher": {
+      "status": true,
+      "message": "Module loaded"
+    },
+    "ai_summarizer": {
+      "status": true,
+      "message": "Gemini API ready"
+    },
+    "whatsapp_sender": {
+      "status": true,
+      "message": "Target: +923300301917"
+    },
+    "smart_cache": {
+      "status": true,
+      "message": "Cache initialized"
+    },
+    "circuit_breaker": {
+      "status": true,
+      "message": "Circuit breaker ready"
+    },
+    "dashboard_generator": {
+      "status": false,
+      "message": "No module named 'analytics'"
+    }
+  },
+  "overall": true
+}

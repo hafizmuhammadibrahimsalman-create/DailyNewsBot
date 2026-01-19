@@ -1,0 +1,38 @@
+[
+  {
+    "start_time": "2026-01-19T21:31:05.997981",
+    "mode": "dry_run",
+    "articles_fetched": 1,
+    "articles_processed": 0,
+    "messages_sent": 0,
+    "steps": {
+      "health": true,
+      "fetch": {
+        "articles": 1
+      },
+      "summarize": true,
+      "send": true
+    },
+    "errors": [],
+    "elapsed_seconds": 0.06,
+    "success": true
+  },
+  {
+    "start_time": "2026-01-19T21:34:39.750452",
+    "mode": "dry_run",
+    "articles_fetched": 1,
+    "articles_processed": 0,
+    "messages_sent": 0,
+    "steps": {
+      "health": true,
+      "fetch": {
+        "articles": 1
+      },
+      "summarize": true,
+      "send": true
+    },
+    "errors": [],
+    "elapsed_seconds": 0.01,
+    "success": true
+  }
+]
