@@ -5,8 +5,8 @@ import google.generativeai as genai
 from typing import List, Dict, Optional
 import json
 import logging
-from config import GEMINI_API_KEY, GEMINI_MODEL, GEMINI_FLASH, SUMMARIZER_PROMPT, INFOGRAPHIC_PROMPT, TOPICS
-from content_scraper import ContentScraper
+from bot.config import GEMINI_API_KEY, GEMINI_MODEL, GEMINI_FLASH, SUMMARIZER_PROMPT, INFOGRAPHIC_PROMPT, TOPICS
+from bot.content_scraper import ContentScraper
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

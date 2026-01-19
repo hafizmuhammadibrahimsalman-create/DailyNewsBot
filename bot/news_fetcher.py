@@ -10,10 +10,9 @@ import feedparser
 import logging
 from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
-from config import TOPICS, MAX_ARTICLES_PER_TOPIC, CACHE_DIR
-from secure_config import SecureConfig
-from smart_cache import SmartCache
-from circuit_breaker import circuit
+from bot.config import TOPICS, MAX_ARTICLES_PER_TOPIC, CACHE_DIR, get_config
+from bot.smart_cache import SmartCache
+from bot.circuit_breaker import circuit
 
 logger = logging.getLogger(__name__)
 
@@ -22,23 +21,16 @@ class NewsFetcher:
     """Fetches news from NewsAPI, GNews, and Google RSS."""
     
     def __init__(self):
-        self.news_api = self._get_api_key("NEWS_API_KEY")
-        self.gnews_api = self._get_api_key("GNEWS_API_KEY")
+        config = get_config()
+        self.news_api = config.api.news_api_key
+        self.gnews_api = config.api.gnews_api_key
         self.cache = SmartCache(CACHE_DIR)
         self.sess = requests.Session()
         self.sess.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         })
     
-    def _get_api_key(self, key_name: str) -> Optional[str]:
-        """Safely get API key with validation."""
-        try:
-            key = SecureConfig.get_credential(key_name)
-            if key and len(key) > 10 and "YOUR_" not in key:
-                return key
-        except Exception as e:
-            logger.debug(f"Could not load {key_name}: {e}")
-        return None
+    # Removed _get_api_key as it is now handled by config validation
 
     def fetch_all_news(self) -> Dict[str, List[Dict]]:
         """Fetch news for all configured topics."""

@@ -285,13 +285,13 @@ class TestWhatsAppSender(unittest.TestCase):
         """Test message sending."""
         mock_send.return_value = None
         
-        from whatsapp_sender import WhatsAppSender
+        from whatsapp_sender import WhatsAppSender, SendStatus
         sender = WhatsAppSender()
         
         with patch('pyautogui.press'):
             result = sender.send_message("Test message")
         
-        self.assertTrue(result)
+        self.assertEqual(result.status, SendStatus.SENT)
 
 
 class TestAutomationController(unittest.TestCase):

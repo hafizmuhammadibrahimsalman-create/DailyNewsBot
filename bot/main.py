@@ -202,31 +202,31 @@ class NewsAutomationController:
         return status
     
     def _check_news_fetcher(self):
-        from news_fetcher import NewsFetcher
+        from bot.news_fetcher import NewsFetcher
         NewsFetcher()
         return True, "Module loaded"
     
     def _check_ai_summarizer(self):
-        from ai_summarizer import GeminiSummarizer
+        from bot.ai_summarizer import GeminiSummarizer
         summarizer = GeminiSummarizer()
         return summarizer.enabled, "Gemini API ready" if summarizer.enabled else "API key issue"
     
     def _check_whatsapp_sender(self):
-        from whatsapp_sender import WhatsAppSender
+        from bot.whatsapp_sender import WhatsAppSender
         sender = WhatsAppSender()
         return bool(sender.phone_number), f"Target: {sender.phone_number}"
     
     def _check_cache(self):
-        from smart_cache import SmartCache
+        from bot.smart_cache import SmartCache
         SmartCache()
         return True, "Cache initialized"
     
     def _check_circuit_breaker(self):
-        from circuit_breaker import CircuitBreaker
+        from bot.circuit_breaker import CircuitBreaker
         return True, "Circuit breaker ready"
     
     def _check_dashboard(self):
-        from dashboard_generator import DashboardGenerator
+        from bot.dashboard_generator import DashboardGenerator
         return True, "Dashboard generator ready"
     
     def _save_health_report(self, health_status: Dict[str, Any]):
@@ -330,14 +330,14 @@ class NewsAutomationController:
     
     def _fetch_news(self) -> Dict[str, List[Dict]]:
         """Fetch news from all sources."""
-        from news_fetcher import NewsFetcher
+        from bot.news_fetcher import NewsFetcher
         fetcher = NewsFetcher()
         return fetcher.fetch_all_news()
     
     def _deduplicate_news(self, all_news: Dict) -> Dict:
         """Remove duplicate articles."""
         try:
-            from news_clustering import NewsClusterer
+            from bot.news_clustering import NewsClusterer
             clusterer = NewsClusterer(similarity_threshold=0.65)
             return clusterer.cluster_news(all_news)
         except Exception as e:
@@ -347,7 +347,7 @@ class NewsAutomationController:
     def _summarize_news(self, all_news: Dict) -> Optional[str]:
         """Summarize news using AI."""
         try:
-            from ai_summarizer import GeminiSummarizer
+            from bot.ai_summarizer import GeminiSummarizer
             summarizer = GeminiSummarizer()
             
             # Filter by topic
@@ -356,7 +356,9 @@ class NewsAutomationController:
                 if articles:
                     filtered[topic] = summarizer.filter_relevant_news(articles, topic)
             
-            return summarizer.create_intelligence_report(filtered)
+            # Use WhatsAppFormatter for reliable formatting
+            from bot.whatsapp_formatter import WhatsAppFormatter
+            return WhatsAppFormatter.format_report(filtered)
         except Exception as e:
             self.logger.error(f"[ERR] Summarization failed: {e}")
             return None
@@ -370,14 +372,16 @@ class NewsAutomationController:
         
         self.logger.info("[>>] Sending via WhatsApp...")
         try:
-            from whatsapp_sender import WhatsAppSender
+            from bot.whatsapp_sender import WhatsAppSender, SendStatus
             sender = WhatsAppSender()
-            success = sender.send_message(message)
-            if success:
+            result = sender.send_message(message)
+            
+            if result.status == SendStatus.SENT:
                 self.logger.info("[OK] Message sent successfully")
+                return True
             else:
-                self.logger.warning("[WARN] Send command issued but verify delivery")
-            return success
+                self.logger.warning(f"[WARN] Send failed: {result.last_error}")
+                return False
         except Exception as e:
             self.logger.error(f"[ERR] Send failed: {e}")
             return False
@@ -385,7 +389,7 @@ class NewsAutomationController:
     def _generate_dashboard(self):
         """Generate analytics dashboard."""
         try:
-            from dashboard_generator import DashboardGenerator
+            from bot.dashboard_generator import DashboardGenerator
             dash = DashboardGenerator()
             dash_path = dash.generate()
             self.logger.info(f"[OK] Dashboard updated: {dash_path}")
@@ -450,7 +454,7 @@ Examples:
     
     try:
         if args.dashboard:
-            from dashboard_generator import DashboardGenerator
+            from bot.dashboard_generator import DashboardGenerator
             path = DashboardGenerator().generate()
             print(f"[OK] Dashboard generated: {path}")
             return 0

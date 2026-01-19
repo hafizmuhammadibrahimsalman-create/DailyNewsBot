@@ -7,8 +7,13 @@ import sys
 import os
 
 # Force UTF-8 encoding for Windows console
+import sys
+import os
+from bot.config import CACHE_DIR
+
+# Force UTF-8 encoding for Windows console
 try:
-    from console_utils import setup_console
+    from bot.console_utils import setup_console
     setup_console()
 except ImportError:
     if sys.platform == 'win32':
@@ -19,9 +24,12 @@ except ImportError:
 class SmartCache:
     """Intelligent caching to reduce API calls"""
     
-    def __init__(self, cache_dir: str = "cache"):
-        self.cache_dir = Path(cache_dir)
-        self.cache_dir.mkdir(exist_ok=True)
+    def __init__(self, cache_dir: Optional[str] = None):
+        if cache_dir is None:
+            self.cache_dir = CACHE_DIR
+        else:
+            self.cache_dir = Path(cache_dir)
+        self.cache_dir.mkdir(exist_ok=True, parents=True)
     
     def get(self, key: str, max_age_minutes: int = 60) -> Optional[Any]:
         """Get cached data if fresh enough"""

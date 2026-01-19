@@ -12,6 +12,7 @@ from typing import Dict, List, Optional
 import logging
 import json
 
+from bot.config import CACHE_DIR
 logger = logging.getLogger(__name__)
 
 
@@ -20,7 +21,7 @@ class AnalyticsDatabase:
     
     def __init__(self, db_path: Optional[Path] = None):
         if db_path is None:
-            db_path = Path("cache") / "analytics.db"
+            db_path = CACHE_DIR / "analytics.db"
         
         self.db_path = Path(db_path)
         self.db_path.parent.mkdir(exist_ok=True)

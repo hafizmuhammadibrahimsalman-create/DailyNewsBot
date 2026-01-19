@@ -16,9 +16,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Project paths
-BASE_DIR = Path(__file__).parent
-CACHE_DIR = BASE_DIR / "cache"
-LOG_DIR = BASE_DIR / "logs"
+BASE_DIR = Path(__file__).parent.parent
+DATA_DIR = BASE_DIR / "data"
+CACHE_DIR = DATA_DIR / "cache"
+LOG_DIR = DATA_DIR / "logs"
 
 
 @dataclass
@@ -167,9 +168,9 @@ class SystemConfig:
     
     def ensure_directories(self):
         """Create necessary directories."""
-        self.cache_dir.mkdir(exist_ok=True)
-        self.log_dir.mkdir(exist_ok=True)
-        (self.log_dir / "health_reports").mkdir(exist_ok=True)
+        self.cache_dir.mkdir(exist_ok=True, parents=True)
+        self.log_dir.mkdir(exist_ok=True, parents=True)
+        (self.log_dir / "health_reports").mkdir(exist_ok=True, parents=True)
 
 
 @dataclass
