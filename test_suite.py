@@ -353,6 +353,252 @@ class IntegrationTests(unittest.TestCase):
         self.assertTrue(result.get("success") or result.get("steps", {}).get("health"))
 
 
+class TestRateLimiter(unittest.TestCase):
+    """Test rate limiting functionality."""
+    
+    def test_rate_limiter_initialization(self):
+        """Test rate limiter initializes correctly."""
+        from rate_limiter import RateLimiter
+        limiter = RateLimiter(max_calls=10, period=60)
+        self.assertEqual(limiter.max_calls, 10)
+        self.assertEqual(limiter.period, 60)
+    
+    def test_rate_limiter_allows_within_limit(self):
+        """Test calls within limit are allowed."""
+        from rate_limiter import RateLimiter
+        limiter = RateLimiter(max_calls=5, period=60)
+        
+        # Should allow first 5 calls
+        for _ in range(5):
+            wait_time = limiter.acquire()
+            self.assertEqual(wait_time, 0)
+    
+    def test_rate_limiter_blocks_over_limit(self):
+        """Test calls over limit are blocked."""
+        from rate_limiter import RateLimiter
+        limiter = RateLimiter(max_calls=2, period=10)
+        
+        # Use up limit
+        limiter.acquire()
+        limiter.acquire()
+        
+        # Third call should require waiting
+        wait_time = limiter.acquire()
+        self.assertGreater(wait_time, 0)
+    
+    def test_rate_limiter_decorator(self):
+        """Test rate limiter as decorator."""
+        from rate_limiter import rate_limited
+        
+        call_count = [0]
+        
+        @rate_limited(3, 10)
+        def test_func():
+            call_count[0] += 1
+            return "success"
+        
+        # Should allow calls
+        result = test_func()
+        self.assertEqual(result, "success")
+        self.assertEqual(call_count[0], 1)
+
+
+class TestUtils(unittest.TestCase):
+    """Test utility functions."""
+    
+    def test_retry_with_backoff_success(self):
+        """Test retry decorator with successful call."""
+        from utils import retry_with_backoff
+        
+        @retry_with_backoff(retries=3, backoff_in_seconds=0.1)
+        def always_succeeds():
+            return "success"
+        
+        result = always_succeeds()
+        self.assertEqual(result, "success")
+    
+    def test_retry_with_backoff_eventual_success(self):
+        """Test retry decorator retries until success."""
+        from utils import retry_with_backoff
+        
+        attempts = [0]
+        
+        @retry_with_backoff(retries=3, backoff_in_seconds=0.1)
+        def fails_twice():
+            attempts[0] += 1
+            if attempts[0] < 3:
+                raise ValueError("Not yet")
+            return "success"
+        
+        result = fails_twice()
+        self.assertEqual(result, "success")
+        self.assertEqual(attempts[0], 3)
+    
+    def test_sanitize_text(self):
+        """Test text sanitization."""
+        from utils import sanitize_text
+        
+        dirty = "Test â€™ text â€" with issues"
+        clean = sanitize_text(dirty)
+        
+        self.assertNotIn("â€™", clean)
+        self.assertIn("'", clean)
+    
+    def test_truncate(self):
+        """Test text truncation."""
+        from utils import truncate
+        
+        long_text = "A" * 100
+        truncated = truncate(long_text, 50)
+        
+        self.assertEqual(len(truncated), 50)
+        self.assertTrue(truncated.endswith("..."))
+    
+    def test_validate_phone_number_valid(self):
+        """Test phone number validation with valid numbers."""
+        from utils import validate_phone_number
+        
+        valid_numbers = ["+923001234567", "+12345678901", "923001234567"]
+        for num in valid_numbers:
+            result = validate_phone_number(num)
+            self.assertIsNotNone(result)
+
+
+class TestWhatsAppFormatter(unittest.TestCase):
+    """Test WhatsApp message formatting."""
+    
+    def test_format_report_basic(self):
+        """Test basic report formatting."""
+        from whatsapp_formatter import WhatsAppFormatter
+        
+        test_news = {
+            "ai": [
+                {"title": "AI Breakthrough", "source": "TechCrunch"},
+                {"title": "ML Advances", "source": "Reuters"}
+            ],
+            "tech": [
+                {"title": "New iPhone", "source": "Apple"}
+            ]
+        }
+        
+        formatted = WhatsAppFormatter.format_report(test_news)
+        
+        self.assertIn("DAILY NEWS", formatted.upper())
+        self.assertIn("AI Breakthrough", formatted)
+        self.assertIn("TechCrunch", formatted)
+    
+    def test_sanitize_text(self):
+        """Test text sanitization in formatter."""
+        from whatsapp_formatter import WhatsAppFormatter
+        
+        dirty = "Test â€™ message"
+        clean = WhatsAppFormatter.sanitize(dirty)
+        
+        self.assertNotIn("â€™", clean)
+    
+    def test_format_error(self):
+        """Test error message formatting."""
+        from whatsapp_formatter import WhatsAppFormatter
+        
+        error_msg = WhatsAppFormatter.format_error("Database connection failed")
+        
+        self.assertIn("FAILED", error_msg.upper())
+        self.assertIn("Database connection", error_msg)
+
+
+class TestAnalyticsDB(unittest.TestCase):
+    """Test analytics database."""
+    
+    def test_database_initialization(self):
+        """Test database creates tables."""
+        from analytics_db import AnalyticsDatabase
+        import tempfile
+        
+        temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        db = AnalyticsDatabase(temp_db.name)
+        
+        # Should initialize without errors
+        self.assertIsNotNone(db)
+    
+    def test_log_run(self):
+        """Test logging a run."""
+        from analytics_db import AnalyticsDatabase
+        import tempfile
+        
+        temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        db = AnalyticsDatabase(temp_db.name)
+        
+        run_id = db.log_run(
+            duration=15.5,
+            success=True,
+            articles_count=25,
+            messages_sent=1
+        )
+        
+        self.assertIsInstance(run_id, int)
+        self.assertGreater(run_id, 0)
+    
+    def test_get_statistics(self):
+        """Test retrieving statistics."""
+        from analytics_db import AnalyticsDatabase
+        import tempfile
+        
+        temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        db = AnalyticsDatabase(temp_db.name)
+        
+        # Log a run
+        db.log_run(10.0, True, 20)
+        
+        stats = db.get_statistics()
+        
+        self.assertIn('total_runs', stats)
+        self.assertIn('successful_runs', stats)
+        self.assertEqual(stats['total_runs'], 1)
+
+
+class TestHealthCheck(unittest.TestCase):
+    """Test health check system."""
+    
+    def test_health_check_initialization(self):
+        """Test health check initializes."""
+        from health_check import HealthCheck
+        
+        health = HealthCheck()
+        self.assertIsNotNone(health)
+    
+    def test_check_directories(self):
+        """Test directory checking."""
+        from health_check import HealthCheck
+        
+        health = HealthCheck()
+        result = health.check_directories()
+        
+        self.assertIn('is_ok', result)
+        self.assertIn('cache_dir', result)
+        self.assertIn('log_dir', result)
+    
+    def test_check_disk_space(self):
+        """Test disk space check."""
+        from health_check import HealthCheck
+        
+        health = HealthCheck()
+        result = health.check_disk_space()
+        
+        self.assertIn('free_space_gb', result)
+        self.assertIn('is_ok', result)
+        self.assertGreater(result['free_space_gb'], 0)
+    
+    def test_run_all_checks(self):
+        """Test running all health checks."""
+        from health_check import HealthCheck
+        
+        health = HealthCheck()
+        results = health.run_all()
+        
+        self.assertIn('summary', results)
+        self.assertIn('all_ok', results['summary'])
+
+
 def run_tests():
     """Run all tests with detailed output."""
     loader = unittest.TestLoader()
@@ -369,6 +615,11 @@ def run_tests():
         TestDashboardGenerator,
         TestWhatsAppSender,
         TestAutomationController,
+        TestRateLimiter,
+        TestUtils,
+        TestWhatsAppFormatter,
+        TestAnalyticsDB,
+        TestHealthCheck,
         IntegrationTests
     ]
     
