@@ -17,16 +17,34 @@ class GeminiSummarizer:
     
     def __init__(self):
         self.scraper = ContentScraper()
+        self.enabled = False
+        self.model = None
+        self.flash_model = None
         
-        if GEMINI_API_KEY and GEMINI_API_KEY != "YOUR_GEMINI_API_KEY_HERE":
+        # Validate API key properly
+        if not GEMINI_API_KEY:
+            logger.warning("[WARN] GEMINI_API_KEY not set. Using basic summaries.")
+            return
+        
+        if "YOUR_" in GEMINI_API_KEY.upper():
+            logger.warning("[WARN] GEMINI_API_KEY contains placeholder. Using basic summaries.")
+            return
+        
+        if len(GEMINI_API_KEY) < 30:
+            logger.warning(f"[WARN] GEMINI_API_KEY looks invalid (too short: {len(GEMINI_API_KEY)} chars). Using basic summaries.")
+            return
+        
+        # Try to initialize Gemini
+        try:
             genai.configure(api_key=GEMINI_API_KEY)
             self.model = genai.GenerativeModel(GEMINI_MODEL)
             self.flash_model = genai.GenerativeModel(GEMINI_FLASH)
             self.enabled = True
             logger.info("[OK] Gemini AI initialized successfully")
-        else:
+        except Exception as e:
+            logger.error(f"[ERR] Failed to initialize Gemini: {e}")
+            logger.warning("[WARN] Falling back to basic summaries")
             self.enabled = False
-            logger.warning("[WARN] Gemini API key not configured. Using basic summaries.")
     
     def create_intelligence_report(self, all_news: Dict[str, List[Dict]]) -> str:
         """Create a comprehensive intelligence report from all news."""
